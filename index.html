@@ -1,0 +1,71 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <!-- to get rid of favicon request in console -->
+  <link rel="shortcut icon" href=" ">
+
+  <!-- P5 STUFF -->
+  <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/p5.js"></script>
+  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+
+  <!-- SOCKET STUFF -->
+  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    
+    var socket = io.connect();
+
+    socket.on('playerNumber', function(data) {
+      // console.log("player number: " + data);
+      getPlayerNumber(data);
+    });
+
+    socket.on('getChange', function(data) {
+      receiveChange(data);
+      // console.log('data color' + data.color);
+    });
+    
+    socket.on('connect', function() {
+      console.log("Connected");
+    });
+
+    socket.on('getShapes', function(data){
+      recieveShapes(data);
+    });
+
+    socket.on('getRecycle', function(data){
+      console.log('get recycle');
+      drawNewColor(data);
+    });
+
+    socket.on('sendShape', function(num){
+      hideShape(num);
+    }); 
+
+    socket.on('sendWinner', function(player) {
+      alert(colors[player] + ' won! Refresh the page to play again.');
+      canMove = false;
+    }); 
+  </script>
+
+  <style> 
+  body {
+    padding: 0; 
+    margin: 0; 
+    float:center;
+  }
+  canvas#defaultCanvas0 {
+    display: block;
+    margin: 05% auto;
+    border-style: solid;
+    border-color: silver;
+    border-width: 5px;
+  }
+  
+  </style>
+</head>
+
+<body>
+</body>
+
+</html>
